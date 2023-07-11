@@ -1,34 +1,15 @@
 
 import UIKit
 
+
 class AvatarCell: UICollectionViewCell {
     @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var loginLabel: UILabel!
     @IBOutlet weak var githubLabel: UILabel!
     
-    private var networkService: NetworkServiceProtocol!
-
-
-    func loadImage(from imageUrl: String, using networkService: NetworkServiceProtocol) {
-        guard let url = URL(string: imageUrl) else {
-            return
-        }
-        activityIndicator.startAnimating()
-        networkService.downloadImage(from: url) { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-                switch result {
-                case .success(let image):
-                    self.imageView.image = image
-                case .failure(let error):
-                    print("Failed to load image: \(error)")
-                    break
-                }
-            }
-        }
-    }
+    private var imageLoadingTask: URLSessionTask?
+    private var viewModel: AvatarCellViewModel?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -38,8 +19,25 @@ class AvatarCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         imageView.layer.cornerRadius = imageView.bounds.width / 2
         imageView.clipsToBounds = true
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageLoadingTask?.cancel() // Cancel the ongoing image loading task
+        imageView.image = nil
+    }
+    
+    func configure(with viewModel: AvatarCellViewModel, networkService: NetworkService) {
+        self.viewModel = viewModel
+        loginLabel.text = viewModel.login
+        githubLabel.text = viewModel.github
+        activityIndicator.startAnimating()
+        viewModel.loadImage(using: networkService, completion: { [weak self] image in
+            self?.imageView.image = image
+            self?.activityIndicator.stopAnimating()
+            self?.layoutSubviews()
+        })
     }
 }

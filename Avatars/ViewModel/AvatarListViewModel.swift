@@ -5,13 +5,12 @@
 import Foundation
 
 class AvatarListViewModel {
-    private let networkService = NetworkService()
     private var githubUsers = [GitUser]()
     
     var reloadData: (() -> Void)?
     var showError: ((String) -> Void)?
     
-    func fetchGithubUsers() {
+    func fetchGithubUsers(networkService: NetworkService) {
         networkService.get(url: .githubUsersEndpoint, resultType: [GitUser].self) { result in
             switch result {
             case .failure(let error):
@@ -24,12 +23,11 @@ class AvatarListViewModel {
         }
     }
     
-    func getGithubUser(at index: Int) -> GitUser {
-        return githubUsers[index]
+    func getGithubUser(at index: Int, networkService: NetworkService) -> AvatarCellViewModel {
+        return AvatarCellViewModel(user: githubUsers[index], networkService: networkService)
     }
     
     func getGithubUserCount() -> Int {
         return githubUsers.count
     }
-    
 }

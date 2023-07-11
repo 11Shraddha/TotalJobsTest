@@ -5,21 +5,12 @@ class ListViewController: UICollectionViewController {
     
     private let viewModel = AvatarListViewModel()
     
-    private var networkService: NetworkServiceProtocol = NetworkService.shared
-    
-    init(networking: NetworkServiceProtocol) {
-        self.networkService = networking
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    let networkService = NetworkService(request: URLSessionNetworkRequest())
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBindings()
-        viewModel.fetchGithubUsers()
+        viewModel.fetchGithubUsers(networkService: networkService)
     }
     
     private func setupBindings() {
@@ -45,11 +36,8 @@ class ListViewController: UICollectionViewController {
         let identifier = String(describing: AvatarCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! AvatarCell
         
-        let githubUser = viewModel.getGithubUser(at: indexPath.row)
-        cell.loginLabel.text = githubUser.login
-        cell.githubLabel.text = "GitHub: \(githubUser.html_url)"
-        cell.loadImage(from: githubUser.avatar_url, using: networkService)
-        
+        let githubUser = viewModel.getGithubUser(at: indexPath.row, networkService: networkService)
+        cell.configure(with: githubUser, networkService: networkService)
         return cell
     }
     //

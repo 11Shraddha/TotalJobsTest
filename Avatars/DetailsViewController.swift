@@ -18,16 +18,16 @@ class DetailsViewController: UIViewController {
     }
 
     func loadDetails() {
-        networkService.get(url: github.avatar_url) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let data):
-                    self.imageView.image = UIImage(data: data)
-                case .failure:
-                    break
-                }
-            }
-        }
+//        networkService.get(url: github.avatar_url) { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let data):
+//                    self.imageView.image = UIImage(data: data)
+//                case .failure:
+//                    break
+//                }
+//            }
+//        }
 
         usernameLabel.text = github.login
         githubLabel.text = "GitHub:\n\(github.html_url)"

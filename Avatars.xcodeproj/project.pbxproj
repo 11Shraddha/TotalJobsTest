@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		41F0B7C32A5C996E0059083E /* AvatarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F0B7C22A5C996E0059083E /* AvatarListViewModel.swift */; };
+		41FAA91A2A5E183A000B27DC /* AvatarCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FAA9192A5E183A000B27DC /* AvatarCellViewModel.swift */; };
 		657CD90E24C72E310050EF8A /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657CD90D24C72E310050EF8A /* DetailsViewController.swift */; };
 		657CD91224C735DD0050EF8A /* Repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657CD91124C735DD0050EF8A /* Repo.swift */; };
 		657CD91424C735E30050EF8A /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657CD91324C735E30050EF8A /* Gist.swift */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		41F0B7C22A5C996E0059083E /* AvatarListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarListViewModel.swift; sourceTree = "<group>"; };
+		41FAA9192A5E183A000B27DC /* AvatarCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCellViewModel.swift; sourceTree = "<group>"; };
 		657CD90D24C72E310050EF8A /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		657CD91124C735DD0050EF8A /* Repo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repo.swift; sourceTree = "<group>"; };
 		657CD91324C735E30050EF8A /* Gist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				41F0B7C22A5C996E0059083E /* AvatarListViewModel.swift */,
+				41FAA9192A5E183A000B27DC /* AvatarCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				A283497C21A7ECC500C5CA71 /* NetworkService.swift in Sources */,
 				657CD91224C735DD0050EF8A /* Repo.swift in Sources */,
 				D3C0572A2A0EA887009F6706 /* Constants.swift in Sources */,
+				41FAA91A2A5E183A000B27DC /* AvatarCellViewModel.swift in Sources */,
 				65EB85BB24C720D30004D087 /* GitUser.swift in Sources */,
 				657CD90E24C72E310050EF8A /* DetailsViewController.swift in Sources */,
 				A283494A21A5CDF100C5CA71 /* AppDelegate.swift in Sources */,
