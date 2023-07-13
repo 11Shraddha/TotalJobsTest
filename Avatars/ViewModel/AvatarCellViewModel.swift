@@ -9,6 +9,7 @@ class AvatarCellViewModel {
     let login: String
     let github: String
     let imageUrl: String?
+    let imageItem: ImageItem!
     let networkService: NetworkService
     
     init(user: GitUser, networkService: NetworkService) {
@@ -16,6 +17,7 @@ class AvatarCellViewModel {
         self.github = user.html_url
         self.imageUrl = user.avatar_url
         self.networkService = networkService
+        imageItem = ImageItem(image: nil, url: NSURL(string: user.avatar_url)!)
     }
     
     func loadImage(using networkService: NetworkService, completion: @escaping (UIImage?) -> Void) {
@@ -43,3 +45,22 @@ class AvatarCellViewModel {
     }
 }
 
+
+class ImageItem: Hashable {
+    
+    var image: UIImage?
+    let url: NSURL!
+    let identifier = UUID()
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
+    }
+    static func == (lhs: ImageItem, rhs: ImageItem) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+    
+    init(image: UIImage?, url: NSURL) {
+        self.image = image
+        self.url = url
+    }
+}

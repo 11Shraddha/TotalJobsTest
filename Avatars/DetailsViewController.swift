@@ -18,7 +18,7 @@ class DetailsViewController: UIViewController {
     }
 
     func loadDetails() {
-//        networkService.get(url: github.avatar_url) { result in
+//        networkService.get(url: github.avatar_url, resultType: <#T##Object.Type#>) { result in
 //            DispatchQueue.main.async {
 //                switch result {
 //                case .success(let data):

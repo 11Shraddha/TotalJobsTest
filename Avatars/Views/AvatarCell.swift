@@ -25,7 +25,7 @@ class AvatarCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        imageLoadingTask?.cancel() // Cancel the ongoing image loading task
+        imageLoadingTask?.cancel()
         imageView.image = nil
     }
     
@@ -33,11 +33,12 @@ class AvatarCell: UICollectionViewCell {
         self.viewModel = viewModel
         loginLabel.text = viewModel.login
         githubLabel.text = viewModel.github
-        activityIndicator.startAnimating()
-        viewModel.loadImage(using: networkService, completion: { [weak self] image in
-            self?.imageView.image = image
-            self?.activityIndicator.stopAnimating()
-            self?.layoutSubviews()
-        })
+        self.activityIndicator.startAnimating()
+        ImageCache.shared.load(url: viewModel.imageItem.url as NSURL, item: viewModel.imageItem, networkService: networkService) { (fetchedItem, image) in
+            if let img = image, img != fetchedItem.image {                self.imageView.image = image
+                self.activityIndicator.stopAnimating()
+                self.layoutSubviews()
+            }
+        }
     }
 }

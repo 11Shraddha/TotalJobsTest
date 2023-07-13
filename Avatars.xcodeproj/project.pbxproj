@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		41BCB85D2A6051AC00DFA968 /* AvatarLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCB85C2A6051AC00DFA968 /* AvatarLoader.swift */; };
 		41F0B7C32A5C996E0059083E /* AvatarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F0B7C22A5C996E0059083E /* AvatarListViewModel.swift */; };
 		41FAA91A2A5E183A000B27DC /* AvatarCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FAA9192A5E183A000B27DC /* AvatarCellViewModel.swift */; };
 		657CD90E24C72E310050EF8A /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657CD90D24C72E310050EF8A /* DetailsViewController.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		41BCB85C2A6051AC00DFA968 /* AvatarLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarLoader.swift; sourceTree = "<group>"; };
 		41F0B7C22A5C996E0059083E /* AvatarListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarListViewModel.swift; sourceTree = "<group>"; };
 		41FAA9192A5E183A000B27DC /* AvatarCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCellViewModel.swift; sourceTree = "<group>"; };
 		657CD90D24C72E310050EF8A /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				A283495021A5CDF300C5CA71 /* Assets.xcassets */,
 				A283495221A5CDF300C5CA71 /* LaunchScreen.storyboard */,
 				A283495521A5CDF300C5CA71 /* Info.plist */,
+				41BCB85C2A6051AC00DFA968 /* AvatarLoader.swift */,
 			);
 			path = Avatars;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41F0B7C32A5C996E0059083E /* AvatarListViewModel.swift in Sources */,
+				41BCB85D2A6051AC00DFA968 /* AvatarLoader.swift in Sources */,
 				A283497821A5D35300C5CA71 /* AvatarCell.swift in Sources */,
 				A283494C21A5CDF100C5CA71 /* ListViewController.swift in Sources */,
 				657CD91424C735E30050EF8A /* Gist.swift in Sources */,

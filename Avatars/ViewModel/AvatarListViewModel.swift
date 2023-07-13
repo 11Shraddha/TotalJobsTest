@@ -4,8 +4,13 @@
 
 import Foundation
 
+protocol AvatarListViewDelegate: AnyObject {
+    func didSelectAvatar(_ gitUser: GitUser)
+}
+
 class AvatarListViewModel {
     private var githubUsers = [GitUser]()
+    weak var delegate: AvatarListViewDelegate?
     
     var reloadData: (() -> Void)?
     var showError: ((String) -> Void)?
@@ -21,6 +26,10 @@ class AvatarListViewModel {
             }
             self.reloadData?()
         }
+    }
+    
+    func navigateToDetails(indexpath: Int) {
+        delegate?.didSelectAvatar(githubUsers[indexpath])
     }
     
     func getGithubUser(at index: Int, networkService: NetworkService) -> AvatarCellViewModel {

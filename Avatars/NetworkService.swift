@@ -125,7 +125,7 @@ class URLSessionNetworkRequest: NetworkRequestProtocol {
     @discardableResult
     func get(url: String, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionDataTask {
         let request = URLRequest(url: URL(string: url)!)
-        let task = session.dataTask(with: request) { data, response, error in
+        let task = URLSession(configuration: URLSessionConfiguration.default).dataTask(with: request) { data, response, error in
             print(response)
             let result: Result<Data, Error>
             defer { completion(result) }
@@ -144,33 +144,6 @@ class URLSessionNetworkRequest: NetworkRequestProtocol {
             }
             
             result = .success(data)
-        }
-        
-        task.resume()
-        return task
-    }
-    
-    func downloadImage(from url: String, completion: @escaping (Result<UIImage?, Error>) -> Void) -> URLSessionTask {
-        let request = URLRequest(url: URL(string: url)!)
-        let task = session.dataTask(with: request) { data, response, error in
-            print(response)
-            let result: Result<UIImage?, Error>
-            defer { completion(result) }
-            
-            // IGNORE IT: simulating the slow internet
-            sleep(.random(in: 0...1))
-            
-            if let error {
-                result = .failure(error)
-                return
-            }
-            
-            guard let data else {
-                result = .failure(NetworkError.noData)
-                return
-            }
-            
-            result = .success(UIImage(data: data))
         }
         
         task.resume()

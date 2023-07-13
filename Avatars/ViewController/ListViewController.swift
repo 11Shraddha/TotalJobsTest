@@ -1,7 +1,7 @@
 
 import UIKit
 
-class ListViewController: UICollectionViewController {
+class ListViewController: UICollectionViewController, AvatarListViewDelegate {
     
     private let viewModel = AvatarListViewModel()
     
@@ -11,6 +11,7 @@ class ListViewController: UICollectionViewController {
         super.viewDidLoad()
         setupBindings()
         viewModel.fetchGithubUsers(networkService: networkService)
+        viewModel.delegate = self
     }
     
     private func setupBindings() {
@@ -22,6 +23,13 @@ class ListViewController: UICollectionViewController {
         viewModel.showError = { [weak self] error in
             // Handle error presentation
         }
+    }
+    
+    func didSelectAvatar(_ gitUser: GitUser) {
+        let detailsViewController = DetailsViewController()
+        detailsViewController.networkService = networkService
+        detailsViewController.github = gitUser
+        navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -37,12 +45,17 @@ class ListViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! AvatarCell
         
         let githubUser = viewModel.getGithubUser(at: indexPath.row, networkService: networkService)
+        cell.tag = indexPath.row
         cell.configure(with: githubUser, networkService: networkService)
         return cell
     }
-    //
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.navigateToDetails(indexpath: indexPath.row)
+    }
+    
     //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //        guard let cell = sender as? AvatarCell, let githubUser = cell.githubUser else { return }
+    //        guard let cell = sender as? AvatarCell, let githubUser = viewModel.getGithubUser(at: sender.tag, networkService: networkService) else { return }
     //        guard let profileViewController = segue.destination as? DetailsViewController else { return }
     //
     //        profileViewController.networkService = networkService
