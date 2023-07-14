@@ -25,23 +25,23 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AvatarCell" id="auX-vL-oDt" userLabel="AvatarCell" customClass="AvatarCell" customModule="Avatars" customModuleProvider="target">
-                                <rect key="frame" x="42.666666666666664" y="0.0" width="308" height="162"/>
+                                <rect key="frame" x="42.666666666666664" y="0.0" width="308" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                    <rect key="frame" x="0.0" y="0.0" width="308" height="162"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="308" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="G5A-34-fqK">
-                                            <rect key="frame" x="162" y="8" width="138" height="102"/>
+                                            <rect key="frame" x="100" y="8" width="184" height="80"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="254" text="sadasd sad sad asd sadsadsa d sa" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r1A-7j-IXm">
-                                                    <rect key="frame" x="0.0" y="0.0" width="123" height="64.333333333333329"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="154.66666666666666" height="42.333333333333336"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sadasd sad sad asd sadsadsa d sa" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hHt-2G-Bqm" userLabel="Page Label">
-                                                    <rect key="frame" x="0.0" y="68.333333333333329" width="123" height="33.666666666666671"/>
+                                                    <rect key="frame" x="0.0" y="46.333333333333343" width="184" height="33.666666666666657"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -49,12 +49,14 @@
                                             </subviews>
                                         </stackView>
                                         <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="4km-Rv-q4c">
-                                            <rect key="frame" x="71" y="71" width="20" height="20"/>
+                                            <rect key="frame" x="40" y="40" width="20" height="20"/>
                                         </activityIndicatorView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="agS-Rd-oeU">
-                                            <rect key="frame" x="8" y="8" width="146" height="146"/>
+                                            <rect key="frame" x="8" y="8" width="84" height="84"/>
                                             <constraints>
+                                                <constraint firstAttribute="height" constant="84" id="5cD-g3-KxM"/>
                                                 <constraint firstAttribute="width" secondItem="agS-Rd-oeU" secondAttribute="height" multiplier="1:1" id="gtX-Bl-gaJ"/>
+                                                <constraint firstAttribute="width" constant="84" id="mSh-tM-luW"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
@@ -68,9 +70,9 @@
                                     <constraint firstItem="G5A-34-fqK" firstAttribute="top" secondItem="auX-vL-oDt" secondAttribute="top" constant="8" id="fb2-P2-GaK"/>
                                     <constraint firstItem="G5A-34-fqK" firstAttribute="leading" secondItem="agS-Rd-oeU" secondAttribute="trailing" constant="8" id="ucA-ZA-5mr"/>
                                     <constraint firstItem="agS-Rd-oeU" firstAttribute="leading" secondItem="auX-vL-oDt" secondAttribute="leading" constant="8" id="vxj-xz-Qt3"/>
-                                    <constraint firstAttribute="trailing" secondItem="G5A-34-fqK" secondAttribute="trailing" constant="8" id="yj0-PX-2k7"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="G5A-34-fqK" secondAttribute="trailing" constant="8" id="yj0-PX-2k7"/>
                                 </constraints>
-                                <size key="customSize" width="308" height="162"/>
+                                <size key="customSize" width="308" height="100"/>
                                 <connections>
                                     <outlet property="activityIndicator" destination="4km-Rv-q4c" id="9UV-cu-6pS"/>
                                     <outlet property="githubLabel" destination="hHt-2G-Bqm" id="t06-1A-kBZ"/>
@@ -111,7 +113,7 @@
         <!--Details View Controller-->
         <scene sceneID="kB0-3s-2mY">
             <objects>
-                <viewController id="3ug-t8-LGI" customClass="DetailsViewController" customModule="Avatars" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailsViewController" id="3ug-t8-LGI" customClass="DetailsViewController" customModule="Avatars" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3ap-GX-dVT">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

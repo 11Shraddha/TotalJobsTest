@@ -1,35 +1,41 @@
 
 import UIKit
+import Combine
 
-class ListViewController: UICollectionViewController, AvatarListViewDelegate {
+class ListViewController: UICollectionViewController {
     
-    private let viewModel = AvatarListViewModel()
+    private var viewModel = AvatarListViewModel()
+    private var subscriptions = Set<AnyCancellable>()
     
     let networkService = NetworkService(request: URLSessionNetworkRequest())
+    private var loadDataSubject = PassthroughSubject<Void,Never>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBindings()
-        viewModel.fetchGithubUsers(networkService: networkService)
-        viewModel.delegate = self
+        loadDataSubject.send()
     }
     
+    /// Function to observe various event call backs from the viewmodel as well as Notifications.
     private func setupBindings() {
-        viewModel.reloadData = { [weak self] in
-            DispatchQueue.main.async {
+        viewModel.attachViewEventListener(loadData: loadDataSubject.eraseToAnyPublisher())
+        
+        viewModel.reloadUserList
+            .sink(receiveCompletion: { completion in
+                // Handle the error
+            }) { [weak self] _ in
+                ActivityIndicator.sharedIndicator.hideActivityIndicator()
                 self?.collectionView.reloadData()
             }
-        }
-        viewModel.showError = { [weak self] error in
-            // Handle error presentation
-        }
-    }
-    
-    func didSelectAvatar(_ gitUser: GitUser) {
-        let detailsViewController = DetailsViewController()
-        detailsViewController.networkService = networkService
-        detailsViewController.github = gitUser
-        navigationController?.pushViewController(detailsViewController, animated: true)
+            .store(in: &subscriptions)
+        
+        viewModel.userSelected
+            .sink(receiveCompletion: { completion in
+                // Handle the error
+            }) { [weak self] user in
+                self?.navigateToUserDetailScreen(user)
+            }
+            .store(in: &subscriptions)
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -37,30 +43,27 @@ class ListViewController: UICollectionViewController, AvatarListViewDelegate {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.getGithubUserCount()
+        return viewModel.numberOfRows
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let identifier = String(describing: AvatarCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! AvatarCell
-        
-        let githubUser = viewModel.getGithubUser(at: indexPath.row, networkService: networkService)
-        cell.tag = indexPath.row
-        cell.configure(with: githubUser, networkService: networkService)
+        cell.prepareCell(viewModel: viewModel.cellViewModel(indexPath: indexPath))
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.navigateToDetails(indexpath: indexPath.row)
+        viewModel.usersSelected(index: indexPath.row)
     }
-    
-    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //        guard let cell = sender as? AvatarCell, let githubUser = viewModel.getGithubUser(at: sender.tag, networkService: networkService) else { return }
-    //        guard let profileViewController = segue.destination as? DetailsViewController else { return }
-    //
-    //        profileViewController.networkService = networkService
-    //        profileViewController.github = githubUser
-    //    }
+}
+
+// MARK: Routing
+extension ListViewController {
+    private func navigateToUserDetailScreen(_ user: GitUser) {
+        let controller = storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 extension ListViewController: UICollectionViewDelegateFlowLayout {

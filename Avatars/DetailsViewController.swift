@@ -36,56 +36,56 @@ class DetailsViewController: UIViewController {
         let dispatchGroup = DispatchGroup()
 
         dispatchGroup.enter()
-        networkService.get(url: github.followers_url, resultType: [GitUser].self) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let followers):
-                    detailLabels.append(self.makeLabel(text: "Followers: \(followers.count)"))
-                case .failure:
-                    detailLabels.append(self.makeLabel(text: "Followers: N/A"))
-                }
-
-                dispatchGroup.leave()
-            }
-        }
-
-        dispatchGroup.enter()
-        networkService.get(url: github.following_url, resultType: [GitUser].self) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let followers):
-                    detailLabels.append(self.makeLabel(text: "Following: \(followers.count)"))
-                case .failure:
-                    detailLabels.append(self.makeLabel(text: "Following: N/A"))
-                }
-                dispatchGroup.leave()
-            }
-        }
+//        networkService.get(url: github.followers_url, resultType: [GitUser].self) { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let followers):
+//                    detailLabels.append(self.makeLabel(text: "Followers: \(followers.count)"))
+//                case .failure:
+//                    detailLabels.append(self.makeLabel(text: "Followers: N/A"))
+//                }
+//
+//                dispatchGroup.leave()
+//            }
+//        }
 
         dispatchGroup.enter()
-        networkService.get(url: github.repos_url, resultType: [Repo].self) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let repositories):
-                    detailLabels.append(self.makeLabel(text: "Repositories count: \(repositories.count)"))
-                case .failure:
-                    detailLabels.append(self.makeLabel(text: "Repositories count: N/A"))
-                }
-            }
-        }
+//        networkService.get(url: github.following_url, resultType: [GitUser].self) { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let followers):
+//                    detailLabels.append(self.makeLabel(text: "Following: \(followers.count)"))
+//                case .failure:
+//                    detailLabels.append(self.makeLabel(text: "Following: N/A"))
+//                }
+//                dispatchGroup.leave()
+//            }
+//        }
 
         dispatchGroup.enter()
-        networkService.get(url: github.gists_url, resultType: [Gist].self) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let gists):
-                    detailLabels.append(self.makeLabel(text: "Gists count: \(gists.count)"))
-                case .failure:
-                    detailLabels.append(self.makeLabel(text: "Gists count: N/A"))
-                }
-            }
-            dispatchGroup.leave()
-        }
+//        networkService.get(url: github.repos_url, resultType: [Repo].self) { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let repositories):
+//                    detailLabels.append(self.makeLabel(text: "Repositories count: \(repositories.count)"))
+//                case .failure:
+//                    detailLabels.append(self.makeLabel(text: "Repositories count: N/A"))
+//                }
+//            }
+//        }
+
+        dispatchGroup.enter()
+//        networkService.get(url: github.gists_url, resultType: [Gist].self) { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let gists):
+//                    detailLabels.append(self.makeLabel(text: "Gists count: \(gists.count)"))
+//                case .failure:
+//                    detailLabels.append(self.makeLabel(text: "Gists count: N/A"))
+//                }
+//            }
+//            dispatchGroup.leave()
+//        }
 
         dispatchGroup.wait()
 

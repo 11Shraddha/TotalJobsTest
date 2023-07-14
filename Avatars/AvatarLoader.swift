@@ -4,51 +4,50 @@
 
 import Foundation
 import UIKit
+import Combine
 
 public class ImageCache {
-    
     public static let shared = ImageCache()
-    private var loadingResponses = [NSURL: [(ImageItem, UIImage?) -> Swift.Void]]()
+    private var loadingResponses = [NSURL: [(UIImage?) -> Void]]()
+    private var cancellables = Set<AnyCancellable>()
     
-    /// - Tag: cache
     // Returns the cached image if available, otherwise asynchronously loads and caches it.
-    final func load(url: NSURL, item: ImageItem, networkService: NetworkService, completion: @escaping (ImageItem, UIImage?) -> Swift.Void) {
+    func load(url: NSURL, networkService: NetworkService) -> AnyPublisher<(NSURL, UIImage?), Never> {
+        let subject = PassthroughSubject<(NSURL, UIImage?), Never>()
         
-        // Check if the image is available in the cache
-        if let  cachedResponse = URLCache.shared.cachedResponse(for: URLRequest(url: url as URL)),
-           let image = UIImage(data: cachedResponse.data) {
-            completion(item, image)
-        }
-        //         In case there are more than one requestor for the image, we append their completion block.
+        // In case there are more than one requestor for the image, we append their completion block.
         if loadingResponses[url] != nil {
-            loadingResponses[url]?.append(completion)
-            return
+            loadingResponses[url]?.append { image in
+                subject.send((url, image))
+            }
         } else {
-            loadingResponses[url] = [completion]
+            loadingResponses[url] = [{ image in
+                subject.send((url, image))
+            }]
         }
         
-        networkService.downloadImage(from: url.absoluteString ?? "") { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let image):
-                    
+        networkService.downloadImage(url: url.absoluteString ?? "")
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Failed to load image: \(error)")
+                    subject.send((url, nil))
+                    subject.send(completion: .finished)
+                case .finished:
+                    break
+                }
+            }, receiveValue: { image in
+                if let image = image {
                     let blocks = self.loadingResponses[url] ?? []
                     // Iterate over each requestor for the image and pass it back.
                     for block in blocks {
-                        DispatchQueue.main.async {
-                            block(item, image)
-                        }
-                        return
+                        block(image)
                     }
-                    
-                case .failure(let error):
-                    print("Failed to load image: \(error)")
-                    DispatchQueue.main.async {
-                        completion(item, nil)
-                    }
-                    
+                    self.loadingResponses[url] = nil
                 }
-            }
-        }.resume()
+            })
+            .store(in: &cancellables)
+        
+        return subject.eraseToAnyPublisher()
     }
 }
