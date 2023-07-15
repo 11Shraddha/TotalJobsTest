@@ -2,15 +2,27 @@ import XCTest
 import Combine
 
 class MockNetworkService: NetworkServiceProtocol {
-    let result: Result<UIImage?, Error>
     
-    init(result: Result<UIImage?, Error>) {
-        self.result = result
+    var imageResult: Result<UIImage?, Error>?
+    var apiResult: Result<Data, Error>?
+
+    func downloadImage(url: String) -> AnyPublisher<UIImage?, Error> {
+        if let result = imageResult {
+            return Result.Publisher(result).eraseToAnyPublisher()
+        } else {
+            return Fail(error: NetworkError.noData).eraseToAnyPublisher()
+        }
     }
     
-    func downloadImage(url: String) -> AnyPublisher<UIImage?, Error> {
-        return Result.Publisher(result)
-            .eraseToAnyPublisher()
+    func getAPI<Object: Decodable>(url: String, resultType: Object.Type) -> AnyPublisher<Object, NetworkError> {
+        if let result = apiResult {
+            return Result.Publisher(result)
+                .decode(type: Object.self, decoder: JSONDecoder())
+                .mapError { _ in NetworkError.requestNotFormed }
+                .eraseToAnyPublisher()
+        } else {
+            return Fail(error: NetworkError.requestNotFormed).eraseToAnyPublisher()
+        }
     }
 }
 
@@ -35,8 +47,7 @@ class AvatarDownloaderTests: XCTestCase {
     func testLoadImage_Success() {
         let url = URL(string: "https://avatars.githubusercontent.com/u/1?v=4")!
         let image = UIImage(named: "avatar.png")
-        let expectedResult: Result<UIImage?, Error> = .success(image)
-        mockNetworkService = MockNetworkService(result: expectedResult)
+        mockNetworkService = MockNetworkService()
         
         let expectation = XCTestExpectation(description: "Image loaded")
         
@@ -57,8 +68,7 @@ class AvatarDownloaderTests: XCTestCase {
     
     func testLoadImage_Failure() {
         let url = URL(string: "https://invalid-url.com")!
-        let expectedFailureResult: Result<UIImage?, Error> = .failure(NetworkError.noData)
-        mockNetworkService = MockNetworkService(result: expectedFailureResult)
+        mockNetworkService = MockNetworkService()
         
         let expectation = XCTestExpectation(description: "Image load failed")
         

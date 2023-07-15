@@ -13,7 +13,7 @@ public class AvatarDownloader {
     private let networkService: NetworkServiceProtocol
 
     // Dependency injection of the network service
-    init(networkService: NetworkServiceProtocol = NetworkService(request: URLSessionNetworkRequest())) {
+    init(networkService: NetworkServiceProtocol = NetworkService()) {
         self.networkService = networkService
     }
 

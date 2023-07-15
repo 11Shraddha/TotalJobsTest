@@ -32,9 +32,9 @@ class AvatarListViewModel {
     }
     
     func loadDetails() {
-        let networkService = NetworkService(request: URLSessionNetworkRequest())
+        let networkService = NetworkService()
         
-        let githubUserListPublisher = networkService.get(url: .githubUsersEndpoint, resultType: [GitUser].self)
+        let githubUserListPublisher = networkService.getAPI(url: .githubUsersEndpoint, resultType: [GitUser].self)
         
         githubUserListPublisher
             .receive(on: DispatchQueue.main)

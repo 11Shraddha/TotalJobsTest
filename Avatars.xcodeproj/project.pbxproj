@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		418C25212A61DB7900126064 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418C25202A61DB7900126064 /* DetailsViewModel.swift */; };
 		41BCB85D2A6051AC00DFA968 /* AvatarDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCB85C2A6051AC00DFA968 /* AvatarDownloader.swift */; };
-		41CF2C772A62E02500916C2E /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A283497B21A7ECC500C5CA71 /* NetworkService.swift */; };
-		41CF2C782A62E04400916C2E /* AvatarDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCB85C2A6051AC00DFA968 /* AvatarDownloader.swift */; };
+		41CF2C792A62F59000916C2E /* AvatarDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCB85C2A6051AC00DFA968 /* AvatarDownloader.swift */; };
+		41CF2C7A2A62F5A600916C2E /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A283497B21A7ECC500C5CA71 /* NetworkService.swift */; };
 		41D12AB42A609BE200E9A916 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D12AB32A609BE200E9A916 /* ActivityIndicator.swift */; };
 		41F0B7C32A5C996E0059083E /* AvatarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F0B7C22A5C996E0059083E /* AvatarListViewModel.swift */; };
 		41FAA91A2A5E183A000B27DC /* AvatarCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FAA9192A5E183A000B27DC /* AvatarCellViewModel.swift */; };
@@ -111,7 +111,10 @@
 		41D12AB22A609BCB00E9A916 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				A283494921A5CDF100C5CA71 /* AppDelegate.swift */,
+				A283497B21A7ECC500C5CA71 /* NetworkService.swift */,
 				41D12AB32A609BE200E9A916 /* ActivityIndicator.swift */,
+				41BCB85C2A6051AC00DFA968 /* AvatarDownloader.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -182,13 +185,10 @@
 				41F0B7C42A5C99840059083E /* ViewController */,
 				41F0B7C12A5C99550059083E /* ViewModel */,
 				657CD91024C7353E0050EF8A /* Model */,
-				A283494921A5CDF100C5CA71 /* AppDelegate.swift */,
-				A283497B21A7ECC500C5CA71 /* NetworkService.swift */,
 				A283494D21A5CDF100C5CA71 /* Main.storyboard */,
 				A283495021A5CDF300C5CA71 /* Assets.xcassets */,
 				A283495221A5CDF300C5CA71 /* LaunchScreen.storyboard */,
 				A283495521A5CDF300C5CA71 /* Info.plist */,
-				41BCB85C2A6051AC00DFA968 /* AvatarDownloader.swift */,
 			);
 			path = Avatars;
 			sourceTree = "<group>";
@@ -366,9 +366,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41CF2C772A62E02500916C2E /* NetworkService.swift in Sources */,
-				41CF2C782A62E04400916C2E /* AvatarDownloader.swift in Sources */,
 				A283495F21A5CDF300C5CA71 /* AvatarsTests.swift in Sources */,
+				41CF2C7A2A62F5A600916C2E /* NetworkService.swift in Sources */,
+				41CF2C792A62F59000916C2E /* AvatarDownloader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

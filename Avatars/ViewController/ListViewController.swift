@@ -3,11 +3,24 @@ import UIKit
 import Combine
 
 class ListViewController: UICollectionViewController {
+        
+    // Note: Architecture Changes
+    // I have made several architecture changes to improve the project's design
+
+    // MVVM Approach
+    //I have adopted the MVVM (Model-View-ViewModel) architecture to separate concerns and improve the reusability of the code. This allows for a clear separation between the presentation logic (ViewModel) and the user interface (View).
+
+    // Combine Framework
+    // To facilitate reactive programming and data binding between the ViewModel and View, I have integrated the Combine framework.
+
+    // Dependency Injection
+    //I have introduced a protocol to handle dependency injection in the network service class. By using protocols, we can easily replace dependencies with mocks or different implementations, improving testability in the future.
+
+    // These architectural changes aim to enhance the maintainability, and testability, while also following to best practices in iOS app development.
+
     
     private var viewModel = AvatarListViewModel()
     private var subscriptions = Set<AnyCancellable>()
-
-//    let networkService = NetworkService(request: URLSession.shared)
     
     override func viewDidLoad() {
         super.viewDidLoad()

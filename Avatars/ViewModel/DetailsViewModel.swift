@@ -37,7 +37,7 @@ class DetailsViewModel {
     }
     
     func loadDetails(github: GitUser) {
-        let networkService = NetworkService(request: URLSessionNetworkRequest())
+        let networkService = NetworkService()
         
         let avatarPublisher = networkService.downloadImage(url: github.avatar_url)
             .replaceError(with: nil)
@@ -49,10 +49,10 @@ class DetailsViewModel {
             }
             .store(in: &cancellables)
         
-        let followersPublisher = networkService.get(url: github.followers_url, resultType: [GitUser].self)
-        let followingPublisher = networkService.get(url: github.following_url, resultType: [GitUser].self)
-        let repositoriesPublisher = networkService.get(url: github.repos_url, resultType: [Repo].self)
-        let gistsPublisher = networkService.get(url: github.gists_url, resultType: [Gist].self)
+        let followersPublisher = networkService.getAPI(url: github.followers_url, resultType: [GitUser].self)
+        let followingPublisher = networkService.getAPI(url: github.following_url, resultType: [GitUser].self)
+        let repositoriesPublisher = networkService.getAPI(url: github.repos_url, resultType: [Repo].self)
+        let gistsPublisher = networkService.getAPI(url: github.gists_url, resultType: [Gist].self)
         
         followersPublisher
             .map { ["Followers: \($0.count)"] }
