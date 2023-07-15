@@ -16,12 +16,18 @@ enum NetworkError: Error {
     }
 }
 
-protocol NetworkRequestProtocol {
+// Protocol defining the networking service requirements
+protocol NetworkServiceProtocol {
+    func downloadImage(url: String) -> AnyPublisher<UIImage?, Error>
+}
+
+
+protocol URLRequestProtocol {
     func getAPI<T: Decodable>(url: String, parameter: [String: AnyObject]?) -> AnyPublisher<T, NetworkError>
     func downloadImage(url: String) -> AnyPublisher<UIImage?, Error>
 }
 
-class URLSessionNetworkRequest: NetworkRequestProtocol {
+class URLSessionNetworkRequest: URLRequestProtocol {
     
     private let session = URLSession.shared
     
@@ -64,16 +70,16 @@ class URLSessionNetworkRequest: NetworkRequestProtocol {
     }
 }
 
-class NetworkService {
+class NetworkService: NetworkServiceProtocol {
     
-    private let request: NetworkRequestProtocol
+    private let request: URLRequestProtocol
     
-    init(request: NetworkRequestProtocol) {
+    init(request: URLRequestProtocol) {
         self.request = request
     }
     
     @discardableResult
-    func get<Object: Codable>(url: String, parameter: [String: AnyObject]?, resultType: Object.Type = Object.self) -> AnyPublisher<Object, NetworkError> {
+    func get<Object: Codable>(url: String, parameter: [String: AnyObject]? = nil, resultType: Object.Type = Object.self) -> AnyPublisher<Object, NetworkError> {
         return self.request.getAPI(url: url, parameter: parameter)
     }
     

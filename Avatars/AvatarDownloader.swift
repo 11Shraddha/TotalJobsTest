@@ -1,26 +1,58 @@
+// AvatarLoader.swift
+//
+// Copyright © 2023 Stepstone. All rights reserved.
 
+import Foundation
 import UIKit
+import Combine
 
-class AvatarDownloader {
-    private enum Constants {
-        static let endpoint = "https://i.pravatar.cc"
+public class AvatarDownloader {
+    public static let shared = AvatarDownloader()
+    private var loadingResponses = [URL: [(UIImage?) -> Void]]()
+    private var cancellables = Set<AnyCancellable>()
+    private let networkService: NetworkServiceProtocol
+
+    // Dependency injection of the network service
+    init(networkService: NetworkServiceProtocol = NetworkService(request: URLSessionNetworkRequest())) {
+        self.networkService = networkService
     }
 
-    func downloadAvatar(avatarID: String, size: Int, completion: @escaping (Result<UIImage, Error>) -> Void) {
-        var componenets = URLComponents(string: Constants.endpoint + "/" + "\(size)")
-        componenets?.queryItems = [
-            URLQueryItem(name: "img", value: avatarID)
-        ]
-        guard let imageUrl = componenets?.url else { return }
-
-        let request = URLRequest(url: imageUrl)
-        let dataTask = URLSession.shared.dataTask(with: request) { (data, _, error) in
-            if let error = error as NSError? {
-                completion(.failure(error))
-            } else if let data, let image = UIImage(data: data) {
-                completion(.success(image))
+    func load(url: URL) -> AnyPublisher<(URL, UIImage?), Never> {
+        let subject = PassthroughSubject<(URL, UIImage?), Never>()
+        
+        // In case there are more than one requestor for the image, we append their completion block.
+        if loadingResponses[url] != nil {
+            loadingResponses[url]?.append { image in
+                subject.send((url, image))
             }
+        } else {
+            loadingResponses[url] = [{ image in
+                subject.send((url, image))
+            }]
         }
-        dataTask.resume()
+                
+        networkService.downloadImage(url: url.absoluteString)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Failed to load image: \(error.localizedDescription)")
+                    subject.send((url, nil))
+                    subject.send(completion: .finished)
+                case .finished:
+                    break
+                }
+            }, receiveValue: { image in
+                if let image = image {
+                    let blocks = self.loadingResponses[url] ?? []
+                    // Iterate over each requestor for the image and pass it back.
+                    for block in blocks {
+                        block(image)
+                    }
+                    self.loadingResponses[url] = nil
+                }
+            })
+            .store(in: &cancellables)
+        
+        return subject.eraseToAnyPublisher()
     }
 }

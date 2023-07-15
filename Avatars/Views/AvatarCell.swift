@@ -40,7 +40,7 @@ class AvatarCell: UICollectionViewCell {
             self.setNeedsLayout()
         } else {
             activityIndicator.startAnimating()
-            ImageCache.shared.load(url: url as NSURL, networkService: NetworkService(request: URLSessionNetworkRequest()))
+            AvatarDownloader.shared.load(url: url)
                 .sink { completion in
                     // Handle completion as needed
                     self.activityIndicator.stopAnimating()

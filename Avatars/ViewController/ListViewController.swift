@@ -6,24 +6,20 @@ class ListViewController: UICollectionViewController {
     
     private var viewModel = AvatarListViewModel()
     private var subscriptions = Set<AnyCancellable>()
-    
-    let networkService = NetworkService(request: URLSessionNetworkRequest())
-    private var loadDataSubject = PassthroughSubject<Void,Never>()
+
+//    let networkService = NetworkService(request: URLSession.shared)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBindings()
-        loadDataSubject.send()
     }
     
-    /// Function to observe various event call backs from the viewmodel as well as Notifications.
     private func setupBindings() {
-        viewModel.attachViewEventListener(loadData: loadDataSubject.eraseToAnyPublisher())
         
-        viewModel.reloadUserList
-            .sink(receiveCompletion: { completion in
-                // Handle the error
-            }) { [weak self] _ in
+        // Bind users list updates to the view
+        viewModel.githubUserListPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] users in
                 ActivityIndicator.sharedIndicator.hideActivityIndicator()
                 self?.collectionView.reloadData()
             }
@@ -62,6 +58,7 @@ class ListViewController: UICollectionViewController {
 extension ListViewController {
     private func navigateToUserDetailScreen(_ user: GitUser) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
+        controller.github = user
         navigationController?.pushViewController(controller, animated: true)
     }
 }
